@@ -11,10 +11,9 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  final int first=1;
   final fixedColor = Color.fromRGBO(8, 8, 45, 1.0);
   SelectController selectController = Get.put(SelectController());
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +26,20 @@ class _FirstScreenState extends State<FirstScreen> {
         ),
         itemCount: 20,
         itemBuilder: (BuildContext context, int index) {
-
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selectController.selectedItems[index] = !selectController.selectedItems[index];
-              });
-            },
-            child: Container(
-              color: selectController.selectedItems[index] ? Colors.red : fixedColor,
-              child: Center(
-                child: Text('${index}'),
+          return GetBuilder<SelectController>(builder: (controller) {
+            return GestureDetector(
+              onTap: () {
+                controller.updateValue(first,index);
+              },
+              child: Container(
+                color:
+                    controller.selectedItems[first]![index] ? Colors.red : fixedColor,
+                child: Center(
+                  child: Text('${index + 1}'),
+                ),
               ),
-            ),
-          );
+            );
+          });
         },
       ),
     );
