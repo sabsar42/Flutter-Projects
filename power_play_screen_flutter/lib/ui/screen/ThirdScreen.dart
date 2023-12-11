@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:power_play_screen_flutter/ui/screen/selectController.dart';
+import 'package:power_play_screen_flutter/ui/controller/selectController.dart';
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({super.key});
@@ -12,9 +12,10 @@ class ThirdScreen extends StatefulWidget {
 }
 
 class _ThirdScreenState extends State<ThirdScreen> {
-
-  final third = 3;
+  final int thi = 30;
+  final grayColor = Color.fromRGBO(70, 83, 91, 1.0);
   final fixedColor = Color.fromRGBO(8, 8, 45, 1.0);
+
   SelectController selectController = Get.put(SelectController());
 
   @override
@@ -31,13 +32,18 @@ class _ThirdScreenState extends State<ThirdScreen> {
           return GetBuilder<SelectController>(builder: (controller) {
             return GestureDetector(
               onTap: () {
-                controller.updateValue(third,index);
+                controller.updateValue(index, thi + index);
               },
               child: Container(
                 color:
-                    controller.selectedItems[third]![index] ? Colors.red : fixedColor,
+                controller.selectedItems[index].second == false
+                    ? fixedColor
+                    : (controller.selectedItems[index].second &&
+                    controller.selectedItems[index].first == thi + index)
+                    ? Colors.red
+                    : grayColor,
                 child: Center(
-                  child: Text('${index+1}'),
+                  child: Text('${index + 1}'),
                 ),
               ),
             );
