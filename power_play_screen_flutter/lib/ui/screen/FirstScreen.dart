@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:power_play_screen_flutter/ui/screen/selectController.dart';
+import 'package:power_play_screen_flutter/ui/controller/selectController.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -11,8 +11,10 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  final int first=1;
+  final int fir = 10;
   final fixedColor = Color.fromRGBO(8, 8, 45, 1.0);
+  final grayColor = Color.fromRGBO(70, 83, 91, 1.0);
+  bool tap = false;
   SelectController selectController = Get.put(SelectController());
 
   @override
@@ -29,11 +31,16 @@ class _FirstScreenState extends State<FirstScreen> {
           return GetBuilder<SelectController>(builder: (controller) {
             return GestureDetector(
               onTap: () {
-                controller.updateValue(first,index);
+                controller.updateValue(index, fir + index);
               },
               child: Container(
-                color:
-                    controller.selectedItems[first]![index] ? Colors.red : fixedColor,
+                color: controller.selectedItems[index].second == false
+                    ? fixedColor
+                    : (controller.selectedItems[index].second &&
+                            controller.selectedItems[index].first ==
+                                fir + index)
+                        ? Colors.red
+                        : grayColor,
                 child: Center(
                   child: Text('${index + 1}'),
                 ),

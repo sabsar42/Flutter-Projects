@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:power_play_screen_flutter/ui/controller/selectController.dart';
 import 'package:power_play_screen_flutter/ui/screen/play_screen.dart';
 
 void main() {
@@ -21,6 +22,15 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       home: const PlayScreen(),
+      initialBinding: GetxDependencyBinder(),
     );
   }
+}
+class GetxDependencyBinder extends Bindings{
+
+  @override
+  void dependencies() {
+    Get.put(SelectController());
+  }
+
 }
