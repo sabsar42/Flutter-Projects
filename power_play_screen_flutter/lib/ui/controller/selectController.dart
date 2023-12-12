@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 class Pair {
   int first;
   bool second;
-
   Pair(this.first, this.second);
 }
 
@@ -25,7 +24,7 @@ class SelectController extends GetxController {
       update();
     } else if (selectedItems[index].second == true) {
       selectedItems[index].second= false;
-      selectedItems[index].first = 0;
+      selectedItems[index].first = value;
       update();
     }
   }

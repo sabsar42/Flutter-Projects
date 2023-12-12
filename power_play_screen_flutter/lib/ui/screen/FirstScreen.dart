@@ -12,14 +12,15 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   final int fir = 10;
-  final fixedColor = Color.fromRGBO(8, 8, 45, 1.0);
-  final grayColor = Color.fromRGBO(70, 83, 91, 1.0);
+  final grayColor = Color.fromRGBO(218, 228, 231, 1.0);
+  final fixedColor = Color.fromRGBO(73, 67, 62, 1.0);
   bool tap = false;
   SelectController selectController = Get.put(SelectController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(1, 1, 28, 1.0),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 8,
@@ -34,15 +35,24 @@ class _FirstScreenState extends State<FirstScreen> {
                 controller.updateValue(index, fir + index);
               },
               child: Container(
-                color: controller.selectedItems[index].second == false
-                    ? fixedColor
-                    : (controller.selectedItems[index].second &&
-                            controller.selectedItems[index].first ==
-                                fir + index)
-                        ? Colors.red
-                        : grayColor,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: controller.selectedItems[index].second == false
+                        ? fixedColor
+                        : (controller.selectedItems[index].second &&
+                                controller.selectedItems[index].first ==
+                                    fir + index)
+                            ? Colors.yellowAccent
+                            : grayColor,
+                  ),
+                ),
                 child: Center(
-                  child: Text('${index + 1}'),
+                  child: Text(
+                    '${index + 1}',
+                    style: TextStyle(
+                      color: Colors.white60,
+                    ),
+                  ),
                 ),
               ),
             );
