@@ -13,12 +13,14 @@ class SecondScreen extends StatefulWidget {
 
 class _SecondScreenState extends State<SecondScreen> {
   final int sec = 20;
-  final fixedColor = Color.fromRGBO(8, 8, 45, 1.0);
+  final grayColor = Color.fromRGBO(218, 228, 231, 1.0);
+  final fixedColor = Color.fromRGBO(73, 67, 62, 1.0);
   SelectController selectController = Get.put(SelectController());
-  final grayColor = Color.fromRGBO(70, 83, 91, 1.0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(1, 1, 28, 1.0),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 8,
@@ -30,18 +32,27 @@ class _SecondScreenState extends State<SecondScreen> {
           return GetBuilder<SelectController>(builder: (controller) {
             return GestureDetector(
               onTap: () {
-                controller.updateValue(index,sec+index);
+                controller.updateValue(index, sec + index);
               },
               child: Container(
-                color:
-                controller.selectedItems[index].second == false
-                    ? fixedColor
-                    : (controller.selectedItems[index].second &&
-                    controller.selectedItems[index].first == sec + index)
-                    ? Colors.red
-                    : grayColor,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: controller.selectedItems[index].second == false
+                        ? fixedColor
+                        : (controller.selectedItems[index].second &&
+                                controller.selectedItems[index].first ==
+                                    sec + index)
+                            ? Colors.yellowAccent
+                            : grayColor,
+                  ),
+                ),
                 child: Center(
-                  child: Text('${index+1}'),
+                  child: Text(
+                    '${index + 1}',
+                    style: TextStyle(
+                      color: Colors.white60,
+                    ),
+                  ),
                 ),
               ),
             );
@@ -50,7 +61,4 @@ class _SecondScreenState extends State<SecondScreen> {
       ),
     );
   }
-
-
 }
-

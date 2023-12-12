@@ -19,6 +19,7 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(1, 1, 28, 1.0),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(16, 10, 33, 1.0),
         leading: Container(
