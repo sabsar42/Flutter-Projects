@@ -15,7 +15,7 @@ class _FirstScreenState extends State<FirstScreen> {
   final grayColor = Color.fromRGBO(218, 228, 231, 1.0);
   final fixedColor = Color.fromRGBO(73, 67, 62, 1.0);
   bool tap = false;
-  SelectController selectController = Get.put(SelectController());
+  SelectController selectController = Get.find<SelectController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,18 +32,24 @@ class _FirstScreenState extends State<FirstScreen> {
           return GetBuilder<SelectController>(builder: (controller) {
             return GestureDetector(
               onTap: () {
-                controller.updateValue(index, fir + index);
+                controller.updateValue(index, fir + index, 'f');
               },
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: controller.selectedItems[index].second == false
-                        ? fixedColor
-                        : (controller.selectedItems[index].second &&
-                                controller.selectedItems[index].first ==
-                                    fir + index)
-                            ? Colors.yellowAccent
-                            : grayColor,
+                    color: () {
+                      if (controller.selectedItems[index].second == false) {
+                        return fixedColor;
+                      } else if (controller.selectedItems[index].second &&
+                          controller.selectedItems[index].selectedScreen ==
+                              'f' &&
+                          controller.selectedItems[index].first ==
+                              fir + index) {
+                        return Colors.yellowAccent;
+                      } else {
+                        return grayColor;
+                      }
+                    }(),
                   ),
                 ),
                 child: Center(

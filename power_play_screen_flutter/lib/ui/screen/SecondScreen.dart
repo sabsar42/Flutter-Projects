@@ -32,27 +32,30 @@ class _SecondScreenState extends State<SecondScreen> {
           return GetBuilder<SelectController>(builder: (controller) {
             return GestureDetector(
               onTap: () {
-                controller.updateValue(index, sec + index);
+                controller.updateValue(index, sec + index, 's');
               },
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: controller.selectedItems[index].second == false
-                        ? fixedColor
-                        : (controller.selectedItems[index].second &&
-                                controller.selectedItems[index].first ==
-                                    sec + index)
-                            ? Colors.yellowAccent
-                            : grayColor,
-                  ),
-                ),
+                border: Border.all(
+                  color: () {
+                    if (controller.selectedItems[index].second == false) {
+                      return fixedColor;
+                    } else if (controller.selectedItems[index].second &&
+                        controller.selectedItems[index].selectedScreen ==
+                            's' &&
+                        controller.selectedItems[index].first ==
+                            sec + index) {
+                      return Colors.yellowAccent;
+                    } else {
+                      return grayColor;
+                    }
+                  }(),
+                ),),
                 child: Center(
-                  child: Text(
-                    '${index + 1}',
-                    style: TextStyle(
-                      color: Colors.white60,
-                    ),
-                  ),
+                  child: Text('${index+1}',
+                  style: TextStyle(
+                      color:Colors.white60,
+                  ),),
                 ),
               ),
             );
@@ -61,4 +64,7 @@ class _SecondScreenState extends State<SecondScreen> {
       ),
     );
   }
+
+
 }
+
