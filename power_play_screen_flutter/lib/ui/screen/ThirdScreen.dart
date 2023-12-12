@@ -16,7 +16,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
   final grayColor = Color.fromRGBO(218, 228, 231, 1.0);
   final fixedColor = Color.fromRGBO(73, 67, 62, 1.0);
 
-  SelectController selectController = Get.put(SelectController());
+  SelectController selectController = Get.find<SelectController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,29 +33,38 @@ class _ThirdScreenState extends State<ThirdScreen> {
           return GetBuilder<SelectController>(builder: (controller) {
             return GestureDetector(
               onTap: () {
-                controller.updateValue(index, thi + index);
+                controller.updateValue(index, thi + index, 't');
               },
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: controller.selectedItems[index].second == false
-                        ? fixedColor
-                        : (controller.selectedItems[index].second &&
-                                controller.selectedItems[index].first ==
-                                    thi + index)
-                            ? Colors.yellowAccent
-                            : grayColor,
-                  ),
+                    border: Border.all(
+
+                      color: () {
+                        if (controller.selectedItems[index].second == false) {
+                          return fixedColor;
+                        } else if (controller.selectedItems[index].second &&
+                            controller.selectedItems[index].selectedScreen ==
+                                't' &&
+                            controller.selectedItems[index].first ==
+                                thi + index) {
+                          return Colors.yellowAccent;
+                        } else {
+                          return grayColor;
+                        }
+                      }(),
+                    )
                 ),
-                child: Center(
-                  child: Text(
-                    '${index + 1}',
-                    style: TextStyle(
-                      color: Colors.white60,
-                    ),
+
+              child: Center(
+                child: Text(
+                  '${index + 1}',
+                  style: TextStyle(
+                    color: Colors.white60,
                   ),
                 ),
               ),
+            )
+            ,
             );
           });
         },

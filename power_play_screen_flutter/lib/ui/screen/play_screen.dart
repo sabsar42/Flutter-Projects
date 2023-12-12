@@ -44,11 +44,21 @@ class _PlayScreenState extends State<PlayScreen> {
       ),
       body: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 30,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: Text(
+                'Power Play 1',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Color.fromRGBO(170, 170, 231, 1.0),
+                ),
+              ),
             ),
             Expanded(
               flex: 1,
@@ -57,11 +67,31 @@ class _PlayScreenState extends State<PlayScreen> {
                 child: FirstScreen(),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: Text(
+                'Power Play 2',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Color.fromRGBO(170, 170, 231, 1.0),
+                ),
+              ),
+            ),
             Expanded(
               flex: 1,
               child: Padding(
                 padding: EdgeInsets.all(12.0),
                 child: SecondScreen(),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: Text(
+                'Power Play 3',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Color.fromRGBO(170, 170, 231, 1.0),
+                ),
               ),
             ),
             Expanded(
