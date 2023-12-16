@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "477337720702",
+    "project_id": "ostad-flu",
+    "storage_bucket": "ostad-flu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477337720702:android:f7f142686243cc35f7852f",
+        "android_client_info": {
+          "package_name": "com.example.firebse_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHQmPmF5b8-2FrIvfYF5m-JNIa4ecLZ9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
