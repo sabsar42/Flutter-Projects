@@ -74,9 +74,9 @@ class MatchDetails extends StatelessWidget {
                 Text(
                   '${match['score']}',
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 26,
                     color: Colors.black,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
                 const SizedBox(height: 8.0),
@@ -85,16 +85,16 @@ class MatchDetails extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.black,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 8.0),
+                const SizedBox(height: 5.0),
                 Text(
                   'Total Time:  ${match['total_time']}',
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.black,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
               ],
