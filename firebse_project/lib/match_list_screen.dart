@@ -3,25 +3,29 @@ import 'package:flutter/material.dart';
 import 'match_details_screen.dart';
 
 class MatchListScreen extends StatelessWidget {
+  const MatchListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Match List'),
+        title: const Text('Match List'),
       ),
-      body: MatchList(),
+      body: const MatchList(),
     );
   }
 }
 
 class MatchList extends StatelessWidget {
+  const MatchList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('match_list').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
 
         var matches = snapshot.data?.docs;
@@ -41,7 +45,7 @@ class MatchList extends StatelessWidget {
                   ),
                 );
               },
-              trailing: Icon(Icons.arrow_forward),
+              trailing: const Icon(Icons.arrow_forward),
             );
           },
         );
