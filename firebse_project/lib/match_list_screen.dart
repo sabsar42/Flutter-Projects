@@ -15,7 +15,6 @@ class MatchListScreen extends StatelessWidget {
     );
   }
 }
-
 class MatchList extends StatelessWidget {
   const MatchList({super.key});
 
