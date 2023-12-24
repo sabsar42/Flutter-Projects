@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 print("on tapped in map");
               }
+
           ),
           Marker(
               markerId: MarkerId('initialPosition'),
