@@ -11,7 +11,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   static final CameraPosition _myPos = const CameraPosition(
       zoom: 19,
-      target: LatLng(23.792265005916146, 90.40561775869223),
+      target: LatLng(24.893066, 91.855838
+      ),
       bearing: 0,
       tilt: 5
   );
