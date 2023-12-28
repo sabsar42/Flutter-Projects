@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,10 +13,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Location _locationController = Location();
+  final Completer<GoogleMapController> _mapController =
+  Completer<GoogleMapController>();
   static const LatLng _myPos = LatLng(24.893216, 91.855856);
   static const LatLng _myAppleLoc =
-      LatLng(23.792265009916146, 90.80561575869223);
-  LatLng? _currentP = null;
+  LatLng(24.893850690446143, 91.85658598730342);
+  LatLng? _currentP;
 
   @override
   void initState() {
@@ -23,14 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
     getLocationUpdates();
   }
 
-  static final CameraPosition _myGoolglePlex = const CameraPosition(
-      zoom: 19, target: LatLng(24.893216, 91.855856), bearing: 0, tilt: 5);
-
-  static final CameraPosition _mAppleePlex = const CameraPosition(
-      zoom: 19,
-      target: LatLng(23.792265009916146, 90.80561575869223),
-      bearing: 0,
-      tilt: 5);
+  static final CameraPosition _myGooglePlex = const CameraPosition(
+    zoom: 15,
+    target: LatLng(24.893216, 91.855856),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -38,42 +37,69 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: GoogleMap(initialCameraPosition: _myGoolglePlex, markers: {
-        Marker(
-          markerId: MarkerId('Current_Location'),
-          icon: BitmapDescriptor.defaultMarker,
-          position: _myPos,
-        ),
-        Marker(
-          markerId: MarkerId('Source_Location'),
-          icon: BitmapDescriptor.defaultMarker,
-          position: _myAppleLoc,
-        ),
-      }),
+      body: Stack(
+        children: [
+          GoogleMap(
+            onMapCreated: (GoogleMapController controller) =>
+                _mapController.complete(controller),
+            initialCameraPosition: _myGooglePlex,
+            markers: {
+              Marker(
+                markerId: MarkerId('Current_Location'),
+                icon: BitmapDescriptor.defaultMarker,
+                position: _currentP ?? _myPos,
+              ),
+              Marker(
+                markerId: MarkerId('Source_Loc'),
+                icon: BitmapDescriptor.defaultMarker,
+                position: _myPos,
+              ),
+              Marker(
+                markerId: MarkerId('Destination_Location'),
+                icon: BitmapDescriptor.defaultMarker,
+                position: _myAppleLoc,
+              ),
+            }
+          ),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: ElevatedButton(
+              onPressed: () => animateToCurrentLocation(),
+              child: Icon(Icons.my_location),
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  Future<void> _cameraToPosition(LatLng pos) async {
+    final GoogleMapController controller = await _mapController.future;
+    await controller.animateCamera(CameraUpdate.newLatLng(pos));
   }
 
   Future<void> getLocationUpdates() async {
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
+
     _serviceEnabled = await _locationController.serviceEnabled();
-    if (_serviceEnabled) {
+    if (!_serviceEnabled) {
       _serviceEnabled = await _locationController.requestService();
-    } else {
+    }
+
+    if (!_serviceEnabled) {
       return;
     }
-    _permissionGranted =
-    await _locationController.hasPermission();
 
+    _permissionGranted = await _locationController.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted =
-          await _locationController.requestPermission();
+      _permissionGranted = await _locationController.requestPermission();
     } else if (_permissionGranted != PermissionStatus.granted) {
       return;
     }
 
-    _locationController.onLocationChanged
-        .listen((LocationData currentLocation) {
+    _locationController.onLocationChanged.listen((LocationData currentLocation) {
       if (currentLocation.latitude != null &&
           currentLocation.longitude != null) {
         setState(() {
@@ -83,5 +109,11 @@ class _HomeScreenState extends State<HomeScreen> {
         print(_currentP);
       }
     });
+  }
+
+  void animateToCurrentLocation() {
+    if (_currentP != null) {
+      _cameraToPosition(_currentP!);
+    }
   }
 }
