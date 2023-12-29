@@ -14,10 +14,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final Location _locationController = Location();
   final Completer<GoogleMapController> _mapController =
-  Completer<GoogleMapController>();
+      Completer<GoogleMapController>();
 
   LatLng? _currentP;
   double _currentHeading = 0.0;
+  MarkerId _markerId = MarkerId('CurrentLocation');
+  PolylineId _polylineId = PolylineId('UserPolyLine');
+  GoogleMapController? _controller;
+
+  List<LatLng> _polylinePoints = [];
 
   late StreamSubscription<LocationData> _locationSubscription;
 
@@ -25,35 +30,51 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getLocationUpdates();
-    const duration = Duration(seconds: 10);
-    Timer.periodic(duration, (Timer t) {
-      animateToCurrentLocation();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        backgroundColor: Colors.blue,
+        title: const Text('My Google Map'),
       ),
-      body: GoogleMap(
-        onMapCreated: (GoogleMapController controller) =>
-            _mapController.complete(controller),
-        initialCameraPosition: CameraPosition(
-          zoom: 15,
-          target: _currentP ?? LatLng(24.893216, 91.855856),
-        ),
-        markers: {
-          Marker(
-            markerId: MarkerId('Current_Location'),
-            icon: BitmapDescriptor.defaultMarker,
-            position: _currentP ?? LatLng(24.893216, 91.855856),
-            rotation: _currentHeading,
+      body: SafeArea(
+        child: GoogleMap(
+          onMapCreated: (GoogleMapController controller) {
+            _mapController.complete(controller);
+            _controller = controller;
+          },
+          initialCameraPosition: CameraPosition(
+            zoom: 15,
+            target: _currentP ?? LatLng(24.893216, 91.855856),
           ),
-        },
-        myLocationEnabled: true,
-        myLocationButtonEnabled: false,
+          markers: {
+            Marker(
+              markerId: _markerId,
+              icon: BitmapDescriptor.defaultMarker,
+              position: _currentP ?? LatLng(0, 0),
+              rotation: _currentHeading,
+              infoWindow: InfoWindow(
+                title: 'My Current Location',
+                snippet:
+                    'Latitude: ${_currentP?.latitude}, Longitude: ${_currentP?.longitude}',
+              ),
+            ),
+          },
+          polylines: {
+            Polyline(
+              polylineId: _polylineId,
+              points: _polylinePoints,
+              color: Colors.blue,
+              width: 5,
+            ),
+          },
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          compassEnabled: true,
+          zoomControlsEnabled: false,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -69,21 +90,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _cameraToPosition(LatLng pos) async {
-    final GoogleMapController controller = await _mapController.future;
-    await controller.animateCamera(CameraUpdate.newLatLng(pos));
+    if (_controller != null) {
+      await _controller!.animateCamera(CameraUpdate.newLatLng(pos));
+    }
   }
 
   void getLocationUpdates() {
-    getLocation(); // Initial location
-    _locationSubscription =
-        _locationController.onLocationChanged.listen((LocationData currentLocation) {
-          if (currentLocation.latitude != null && currentLocation.longitude != null) {
-            setState(() {
-              _currentP = LatLng(currentLocation.latitude!, currentLocation.longitude!);
-              _currentHeading = currentLocation.heading ?? 0.0;
-            });
-          }
+    getLocation();
+    _locationSubscription = _locationController.onLocationChanged
+        .listen((LocationData currentLocation) {
+      if (currentLocation.latitude != null &&
+          currentLocation.longitude != null) {
+        setState(() {
+          _currentP =
+              LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          _currentHeading = currentLocation.heading ?? 0.0;
         });
+        _updateMarker();
+        _updatePolyline();
+        animateToCurrentLocation();
+      }
+    });
   }
 
   void getLocation() async {
@@ -94,15 +121,36 @@ class _HomeScreenState extends State<HomeScreen> {
           _currentP = LatLng(locationData.latitude!, locationData.longitude!);
           _currentHeading = locationData.heading ?? 0.0;
         });
+        _updateMarker();
+        _updatePolyline();
       }
     } catch (e) {
-      print('error gettimg location: $e');
+      print('Error getting location: $e');
     }
   }
 
   void animateToCurrentLocation() {
     if (_currentP != null) {
       _cameraToPosition(_currentP!);
+    }
+  }
+
+  void _updateMarker() {
+    if (_currentP != null) {
+      _mapController.future.then((controller) {
+        controller.showMarkerInfoWindow(_markerId);
+        controller.moveCamera(
+          CameraUpdate.newLatLng(_currentP!),
+        );
+      });
+    }
+  }
+
+  void _updatePolyline() {
+    if (_currentP != null) {
+      setState(() {
+        _polylinePoints.add(_currentP!);
+      });
     }
   }
 
