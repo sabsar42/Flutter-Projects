@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -18,12 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   LatLng? _currentP;
   double _currentHeading = 0.0;
-  MarkerId _markerId = MarkerId('CurrentLocation');
-  PolylineId _polylineId = PolylineId('UserPolyLine');
+  final MarkerId _markerId = const MarkerId('CurrentLocation');
+  final PolylineId _polylineId = const PolylineId('UserPolyLine');
   GoogleMapController? _controller;
 
 
-  List<LatLng> _polylinePoints = [];
+  final List<LatLng> _polylinePoints = [];
 
   late StreamSubscription<LocationData> _locationSubscription;
 
