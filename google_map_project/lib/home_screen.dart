@@ -21,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final PolylineId _polylineId = const PolylineId('UserPolyLine');
   GoogleMapController? _controller;
 
-
   final List<LatLng> _polylinePoints = [];
 
   late StreamSubscription<LocationData> _locationSubscription;
@@ -36,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
         title: const Text('My Google Map'),
       ),
       body: SafeArea(
