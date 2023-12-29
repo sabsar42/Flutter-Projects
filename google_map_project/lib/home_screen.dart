@@ -12,33 +12,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Completer<GoogleMapController> _controller = Completer();
-  static const LatLng _myPos = LatLng(24.893216, 91.855856);
+  final Location _locationController = Location();
+  final Completer<GoogleMapController> _mapController =
+  Completer<GoogleMapController>();
+
+  LatLng? _currentP;
+  double _currentHeading = 0.0;
+
+  late StreamSubscription<LocationData> _locationSubscription;
 
   @override
   void initState() {
     super.initState();
-    _marker.addAll(_list);
-    _getLocation();
+    getLocationUpdates();
+    const duration = Duration(seconds: 10);
+    Timer.periodic(duration, (Timer t) {
+      animateToCurrentLocation();
+    });
   }
-
-  List<Marker> _marker = [];
-  final List<Marker> _list = const [
-    Marker(
-      markerId: MarkerId('1'),
-      icon: BitmapDescriptor.defaultMarker,
-      position: _myPos,
-      infoWindow: InfoWindow(
-        title: 'My Location',
-        snippet: 'This is my Snippet',
-      ),
-    ),
-  ];
-
-  static final CameraPosition _myGooglePlex = const CameraPosition(
-    zoom: 15,
-    target: LatLng(24.893216, 91.855856),
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -46,48 +37,78 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: SafeArea(
-        child: GoogleMap(
-          zoomControlsEnabled: false,
-          initialCameraPosition: _myGooglePlex,
-          markers: Set.of(_marker),
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
+      body: GoogleMap(
+        onMapCreated: (GoogleMapController controller) =>
+            _mapController.complete(controller),
+        initialCameraPosition: CameraPosition(
+          zoom: 15,
+          target: _currentP ?? LatLng(24.893216, 91.855856),
         ),
+        markers: {
+          Marker(
+            markerId: MarkerId('Current_Location'),
+            icon: BitmapDescriptor.defaultMarker,
+            position: _currentP ?? LatLng(24.893216, 91.855856),
+            rotation: _currentHeading,
+          ),
+        },
+        myLocationEnabled: true,
+        myLocationButtonEnabled: false,
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.my_location_sharp,
-        color: Colors.blueAccent,),
+        child: Icon(
+          Icons.my_location_sharp,
+          color: Colors.blueAccent,
+        ),
         backgroundColor: Colors.white,
         onPressed: () {
-          _getLocation();
+          animateToCurrentLocation();
         },
       ),
     );
   }
 
-  Future<void> _getLocation() async {
-    LocationData locationData;
-    var location = Location();
+  Future<void> _cameraToPosition(LatLng pos) async {
+    final GoogleMapController controller = await _mapController.future;
+    await controller.animateCamera(CameraUpdate.newLatLng(pos));
+  }
 
+  void getLocationUpdates() {
+    getLocation(); // Initial location
+    _locationSubscription =
+        _locationController.onLocationChanged.listen((LocationData currentLocation) {
+          if (currentLocation.latitude != null && currentLocation.longitude != null) {
+            setState(() {
+              _currentP = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+              _currentHeading = currentLocation.heading ?? 0.0;
+            });
+          }
+        });
+  }
+
+  void getLocation() async {
     try {
-      locationData = await location.getLocation();
-      GoogleMapController controller = await _controller.future;
-
-      controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(
-              locationData.latitude!,
-              locationData.longitude!,
-            ),
-            zoom: 19,
-          ),
-        ),
-      );
+      final LocationData locationData = await _locationController.getLocation();
+      if (locationData.latitude != null && locationData.longitude != null) {
+        setState(() {
+          _currentP = LatLng(locationData.latitude!, locationData.longitude!);
+          _currentHeading = locationData.heading ?? 0.0;
+        });
+      }
     } catch (e) {
-      print('Error getting location: $e');
+      print('error gettimg location: $e');
     }
+  }
+
+  void animateToCurrentLocation() {
+    if (_currentP != null) {
+      _cameraToPosition(_currentP!);
+    }
+  }
+
+  @override
+  void dispose() {
+    _locationSubscription.cancel();
+    super.dispose();
   }
 }
