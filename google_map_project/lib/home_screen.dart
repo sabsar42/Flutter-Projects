@@ -77,14 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.my_location_sharp,
-          color: Colors.blueAccent,
-        ),
         backgroundColor: Colors.white,
         onPressed: () {
           animateToCurrentLocation();
         },
+        child: const Icon(
+          Icons.my_location_sharp,
+          color: Colors.blueAccent,
+        ),
       ),
     );
   }
