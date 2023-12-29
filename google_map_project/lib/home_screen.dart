@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         onPressed: () {
-          animateToCurrentLocation();
+          _animateToCurrentLocation();
         },
         child: const Icon(
           Icons.my_location_sharp,
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
         _updateMarker();
         _updatePolyline();
-        animateToCurrentLocation();
+        _animateToCurrentLocation();
       }
     });
   }
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void animateToCurrentLocation() {
+  void _animateToCurrentLocation() {
     if (_currentP != null) {
       _cameraToPosition(_currentP!);
     }
