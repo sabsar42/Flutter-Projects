@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     getLocationUpdates();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
