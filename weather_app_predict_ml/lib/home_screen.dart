@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     _weatherFactory.currentWeatherByCityName("Sylhet").then((w) {
       setState(() {
         _weather = w;
