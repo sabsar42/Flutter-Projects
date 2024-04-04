@@ -61,7 +61,7 @@ class _BmiAppState extends State<BmiApp> {
         title: Text(
           'BMI Calculator',
           style: TextStyle(
-            fontSize: 22,
+            fontSize: 20,
           ),
         ),
       ),
@@ -87,17 +87,45 @@ class _BmiAppState extends State<BmiApp> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      children: [
-                        Flexible(
-                          flex: 2,
+                  heightDropdownValue == 'cm'
+                      ? Expanded(
+                          flex: 3,
                           child: Padding(
                             padding: const EdgeInsets.all(30.0),
                             child: TextField(
                               onChanged: (value) {
-                                // Convert height to cm if heightDropdownValue is 'ft'
+                                double cm = double.tryParse(value) ??
+                                    0.0; // Parse user input into a double or default to 0.0 if parsing fails
+
+                                heightInCm = cm;
+                                calculateBMI(
+                                    height: heightInCm, weight: weightInKg);
+                              },
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: "cm",
+                                labelStyle: TextStyle(
+                                  fontSize: 25,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 1.0,
+                                  horizontal: 4.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          flex: 3,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(30.0),
+                                  child: TextField(
+                                    onChanged: (value) {
+                                      // Convert height to cm if heightDropdownValue is 'ft'
                                 if (heightDropdownValue == 'ft') {
                                   double feet = double.parse(value);
                                   fHeightCm = (feet * 30.48);
