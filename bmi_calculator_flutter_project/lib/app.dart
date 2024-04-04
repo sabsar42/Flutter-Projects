@@ -261,6 +261,7 @@ class _BmiAppState extends State<BmiApp> {
                                 labelText: 'St',
                                 labelStyle: TextStyle(
                                   fontSize: 15,
+
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 30.0),
