@@ -1,17 +1,10 @@
+import 'package:bmi_calculator_flutter_project/app.dart';
 import 'package:flutter/material.dart';
-
-import 'app.dart';
+import 'package:get/get.dart';
+import 'screen/bmi_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(BmiApp());
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: BmiApp(), // Specify your home screen widget here
-    );
-  }
-}
+
