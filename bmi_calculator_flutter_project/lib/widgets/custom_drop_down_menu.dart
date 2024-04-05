@@ -17,11 +17,13 @@ class CustomDropdownMenu extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 25, right: 20),
       child: DropdownButton<String>(
+        dropdownColor: Colors.grey.shade100,
         value: dropdownValue,
         elevation: 0,
         icon: const Icon(Icons.keyboard_arrow_down),
         items: items.map((String item) {
           return DropdownMenuItem<String>(
+
             value: item,
             child: Text(
               item,
