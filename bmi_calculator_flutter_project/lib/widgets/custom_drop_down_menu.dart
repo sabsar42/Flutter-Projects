@@ -27,7 +27,7 @@ class CustomDropdownMenu extends StatelessWidget {
             value: item,
             child: Text(
               item,
-              style: TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13),
             ),
           );
         }).toList(),

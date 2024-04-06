@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../controller/switch_controller.dart';
 import '../utils/dropdown_utils.dart';
@@ -62,12 +61,12 @@ class _SettingScreenState extends State<SettingScreen> {
                         height: 60,
                         padding: const EdgeInsets.symmetric(vertical: 1.0),
                         child: SettingsCustomDropdownMenu(
-                          items: ['WHO', 'DGE'],
+                          items: const ['WHO', 'DGE'],
                           dropdownValue: classificationDropDownValue,
                           onChanged: (newValue) {
                             setState(() {
                               switchController.toggleClassificationUnit(newValue!);
-                              classificationDropDownValue = newValue!;
+                              classificationDropDownValue = newValue;
                             });
                           },
                           labelText: 'Classification',
@@ -103,10 +102,10 @@ class _SettingScreenState extends State<SettingScreen> {
                         fontSize: 13,
                         fontWeight: FontWeight.w300
                     ) ,)
-                      : SizedBox(),
+                      : const SizedBox(),
                    UnitMenu(),
 
-                   Padding(
+                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
                     child: Text(
                       'More',
@@ -128,8 +127,8 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   Padding MoreMenu() {
-    return Padding(
-                  padding: const EdgeInsets.all(12.0),
+    return const Padding(
+                  padding: EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -201,12 +200,12 @@ class _SettingScreenState extends State<SettingScreen> {
 
   Padding UnitMenu() {
     return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(
+                      const Text(
                         'Units',
                         style: TextStyle(
                           fontSize: 14,
@@ -214,16 +213,16 @@ class _SettingScreenState extends State<SettingScreen> {
                           color: Colors.indigo,
                         ),
                       ),
-                      SizedBox(height: 15,),
+                      const SizedBox(height: 15,),
                       Row(
 
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(
+                          SizedBox(
                             width: 180,
                             height: 60,
                             child: SettingsCustomDropdownMenu(
-                              items: ['ft', 'cm'],
+                              items: const ['ft', 'cm'],
                               dropdownValue: heightUnit,
                               onChanged: (newValue) {
                                 setState(() {
@@ -233,11 +232,11 @@ class _SettingScreenState extends State<SettingScreen> {
                               labelText: 'Height',
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: 180,
                             height: 60,
                             child: SettingsCustomDropdownMenu(
-                              items: ['kg', 'lb', 'st'],
+                              items: const ['kg', 'lb', 'st'],
                               dropdownValue: weightUnit,
                               onChanged: (newValue) {
                                 setState(() {

@@ -1,10 +1,11 @@
 import 'package:bmi_calculator_flutter_project/controller/switch_controller.dart';
 import 'package:bmi_calculator_flutter_project/screen/settings_screen.dart';
 import 'package:bmi_calculator_flutter_project/utils/dropdown_utils.dart';
-import 'package:bmi_calculator_flutter_project/widgets/bmi_circular_gauge.dart';
 import 'package:bmi_calculator_flutter_project/widgets/normal_weight_info.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../data/bmi_data_info.dart';
 
@@ -73,7 +74,7 @@ class _BmiScreenState extends State<BmiScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey.shade50,
-        title: Text(
+        title: const Text(
           'BMI Calculator',
           style: TextStyle(
             fontSize: 20,
@@ -84,10 +85,10 @@ class _BmiScreenState extends State<BmiScreen> {
             onPressed: () {
               resetState();
             },
-            icon: Icon(Icons.refresh_sharp),
+            icon: const Icon(Icons.refresh_sharp),
           ),
           PopupMenuButton<String>(
-            offset: Offset(0, 40),
+            offset: const Offset(0, 40),
             onSelected: (String value) {
               if (value == 'settings') {
                 Navigator.push(
@@ -97,10 +98,10 @@ class _BmiScreenState extends State<BmiScreen> {
               }
             },
             itemBuilder: (_) => [
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'settings',
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                       vertical: 5, horizontal: 5), // Adjust the padding here
                   child: Text('Settings'),
                 ),
@@ -115,19 +116,111 @@ class _BmiScreenState extends State<BmiScreen> {
           children: [
             AgeHeightRow(),
             GenderWeightRow(),
-            SizedBox(
+            const SizedBox(
               height: 130,
             ),
-            BmiCircularGauge(bmi: bmi),
+          SizedBox(
+            height: 120,
+            width: 300,
+            child: SfRadialGauge(
+              enableLoadingAnimation: true,
+              axes: <RadialAxis>[
+                RadialAxis(
+                  startAngle: 180,
+                  endAngle: 360,
+                  minimum: 10.0,
+                  maximum: 40.0,
+                  radiusFactor: 3,
+                  showLabels: true,
+                  labelOffset: 14,
+                  showLastLabel: true,
+                  showAxisLine: true,
+                  showFirstLabel: true,
+                  showTicks: true,
+                  tickOffset: 58,
+                  interval: 5.0,
+                  ranges: <GaugeRange>[
+                    GaugeRange(
+                      startWidth: 70,
+                      endWidth: 70,
+                      startValue: 10,
+                      endValue: 18.4,
+                      label: 'Underweight',
+                      color: Colors.blue,
+                    ),
+                    GaugeRange(
+                      startWidth: 70,
+                      endWidth: 70,
+                      startValue: 18.5,
+                      endValue: 24.9,
+                      label: 'Normal',
+                      color: Colors.green,
+                    ),
+                    GaugeRange(
+                      startWidth: 70,
+                      endWidth: 70,
+                      startValue: 25.0,
+                      endValue: 49.0,
+                      label: 'Overweight',
+                      color: Colors.red,
+                    ),
+                  ],
+                  pointers: <GaugePointer>[
+                    NeedlePointer(
+                      enableAnimation: true,
+                      value: bmi,
+                      needleLength: 0.72,
+                      needleColor: Colors.white,
+                      needleStartWidth: 0.5,
+                      needleEndWidth: 60,
+                      knobStyle: const KnobStyle(
+                        knobRadius: 0,
+                        borderWidth: 0,
+                      ),
+                    ),
+                  ],
+                  annotations: <GaugeAnnotation>[
+                    GaugeAnnotation(
+                      widget: Center(
+                        child: Container(
+                          child: const Text(
+                            'BMI',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      angle: 620,
+                      positionFactor: 0.2,
+                    ),
+                    GaugeAnnotation(
+                      widget: Center(
+                        child: Container(
+                          child: Text(
+                            bmi.toStringAsFixed(1),
+                            style:  TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: getBMIColor(bmi),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
             CategoryAndDifferences(),
-            Divider(
+            const Divider(
               height: 5,
               thickness: 0.4,
               indent: 20,
               endIndent: 20,
             ),
             BmiDataInfoChart(),
-            Divider(
+            const Divider(
               height: 5,
               thickness: 0.4,
               indent: 20,
@@ -144,9 +237,9 @@ class _BmiScreenState extends State<BmiScreen> {
 
   Container BmiDataInfoChart() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 45),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 45),
       child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: bmiData.length,
         itemBuilder: (context, index) {
@@ -157,12 +250,12 @@ class _BmiScreenState extends State<BmiScreen> {
           bool highlight = false;
 
           if (bmi != 0.0 &&
-              (bmi >= rangeStart && (bmi < rangeEnd || rangeEnd == 0))) {
+              (bmi >= rangeStart && (bmi <= rangeEnd || rangeEnd == 0))) {
             highlight = true;
           }
 
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: 3),
+            padding: const EdgeInsets.symmetric(vertical: 3),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -173,7 +266,7 @@ class _BmiScreenState extends State<BmiScreen> {
                             Icons.keyboard_arrow_right_outlined,
                             color: getBMIColor(bmi),
                           )
-                        : Text(''),
+                        : const Text(''),
                     Text(
                       category,
                       style: TextStyle(
@@ -184,7 +277,7 @@ class _BmiScreenState extends State<BmiScreen> {
                     ),
                   ],
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Text(
                   rangeStart == 0
                       ? '≤ $rangeEnd'
@@ -208,8 +301,8 @@ class _BmiScreenState extends State<BmiScreen> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-          child: Row(
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+          child: const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -225,13 +318,13 @@ class _BmiScreenState extends State<BmiScreen> {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '$bmiCategory',
+                bmiCategory,
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 16,
@@ -264,7 +357,7 @@ class _BmiScreenState extends State<BmiScreen> {
         child: Row(
           children: [
             switchController.switchValue.value
-                ? Padding(
+                ? const Padding(
                     padding: EdgeInsets.symmetric(vertical: 1, horizontal: 10),
                     child: Text(
                       'Weight',
@@ -287,7 +380,7 @@ class _BmiScreenState extends State<BmiScreen> {
                   ),
             switchController.switchValue.value
                 ? const SizedBox()
-                : SizedBox(
+                : const SizedBox(
                     width: 10,
                   ),
             switchController.switchValue.value
@@ -329,7 +422,7 @@ class _BmiScreenState extends State<BmiScreen> {
                                 weightInStones = double.parse(value);
                                 setState(() {});
                               },
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'st',
                                 hintStyle: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w200),
@@ -351,7 +444,7 @@ class _BmiScreenState extends State<BmiScreen> {
                               controller: weightLbController,
                               keyboardType: TextInputType.number,
                               onChanged: StLbToKg,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'lb',
                                 hintStyle: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w200),
@@ -381,18 +474,18 @@ class _BmiScreenState extends State<BmiScreen> {
                         decoration: InputDecoration(
                           labelText: 'Weight',
                           hintText: weightDropdownValue == 'kg' ? 'kg' : 'lb',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w200),
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             fontSize: 15,
                           ),
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 30.0),
                         ),
                       ),
                     ),
                   ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Expanded(
@@ -420,7 +513,7 @@ class _BmiScreenState extends State<BmiScreen> {
         children: [
           switchController.switchValue.value ||
                   switchController.classificationUnit == 'DGE'
-              ? Padding(
+              ? const Padding(
                   padding: EdgeInsets.symmetric(vertical: 1, horizontal: 30),
                   child: Text(
                     'Height',
@@ -433,7 +526,7 @@ class _BmiScreenState extends State<BmiScreen> {
                     child: TextField(
                       controller: ageController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Age',
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 1.0, horizontal: 1.0),
@@ -456,7 +549,7 @@ class _BmiScreenState extends State<BmiScreen> {
                         normalWeight(height: heightInCm);
                       },
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "cm",
                         labelStyle: TextStyle(
                           fontSize: 25,
@@ -492,7 +585,7 @@ class _BmiScreenState extends State<BmiScreen> {
                               normalWeight(height: heightInCm);
                             },
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "ft",
                               labelText: "'",
                               labelStyle: TextStyle(
@@ -512,7 +605,7 @@ class _BmiScreenState extends State<BmiScreen> {
                             controller: heightInchController,
                             onChanged: FeetToCm,
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "in",
                               labelText: '"',
                               labelStyle: TextStyle(
@@ -557,14 +650,14 @@ class _BmiScreenState extends State<BmiScreen> {
 
   void calculateBMI({required double height, required double weight}) {
     setState(() {
-      bmi = (weight / (height * height)) * 10000;
+      bmi = double.parse(((weight / (height * height)) * 10000).toStringAsFixed(1));
 
       for (var item in bmiData) {
         final rangeStart = item['range'][0];
         final rangeEnd = item['range'][1];
         final category = item['category']!;
-
-        if (bmi >= rangeStart && (bmi < rangeEnd || rangeEnd == 0)) {
+        print(category);
+        if (bmi >= rangeStart && (bmi <= rangeEnd || rangeEnd == 0)) {
           setState(() {
             bmiCategory = category;
           });

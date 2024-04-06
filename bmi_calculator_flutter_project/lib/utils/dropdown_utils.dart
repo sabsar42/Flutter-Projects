@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_drop_down_menu.dart';
@@ -9,7 +8,7 @@ CustomDropdownMenu HeightMetricsDropDownMenu({
   required ValueChanged<String?> onChanged,
 }) {
   return CustomDropdownMenu(
-    items: ['ft', 'cm'],
+    items: const ['ft', 'cm'],
     dropdownValue: dropdownValue,
     onChanged: onChanged,
   );
@@ -20,7 +19,7 @@ CustomDropdownMenu WeightMetricsDropDownMenu({
   required ValueChanged<String?> onChanged,
 }) {
   return CustomDropdownMenu(
-    items: ['kg', 'lb', 'st'],
+    items: const ['kg', 'lb', 'st'],
     dropdownValue: dropdownValue,
     onChanged: onChanged,
   );
@@ -51,11 +50,11 @@ class SettingsCustomDropdownMenu extends StatelessWidget {
               color: Colors.purple.shade800,
             ),
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.deepPurple, width: 10.0),
+              borderSide: const BorderSide(color: Colors.deepPurple, width: 10.0),
               borderRadius: BorderRadius.circular(5.0),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.deepPurple, width: 10.0),
+              borderSide: const BorderSide(color: Colors.deepPurple, width: 10.0),
               borderRadius: BorderRadius.circular(5.0),
             ),
           ),
