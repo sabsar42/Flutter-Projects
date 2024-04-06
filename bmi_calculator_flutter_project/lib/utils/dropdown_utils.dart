@@ -47,6 +47,9 @@ class SettingsCustomDropdownMenu extends StatelessWidget {
         return InputDecorator(
           decoration: InputDecoration(
             labelText: labelText,
+            labelStyle: TextStyle(
+              color: Colors.purple.shade800,
+            ),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.deepPurple, width: 10.0),
               borderRadius: BorderRadius.circular(5.0),

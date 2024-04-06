@@ -1,5 +1,5 @@
-import 'package:bmi_calculator_flutter_project/screen/settings_screen.dart';
 import 'package:bmi_calculator_flutter_project/controller/switch_controller.dart';
+import 'package:bmi_calculator_flutter_project/screen/settings_screen.dart';
 import 'package:bmi_calculator_flutter_project/utils/dropdown_utils.dart';
 import 'package:bmi_calculator_flutter_project/widgets/bmi_circular_gauge.dart';
 import 'package:bmi_calculator_flutter_project/widgets/normal_weight_info.dart';
@@ -257,299 +257,302 @@ class _BmiScreenState extends State<BmiScreen> {
     );
   }
 
-  Padding GenderWeightRow() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 30),
-      child: Row(
-        children: [
-          Flexible(
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  isMale = false;
-                });
-              },
-              icon: Icon(
-                Icons.woman_outlined,
-                size: 40,
-                color: isMale == false ? Colors.teal : null,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Container(
-            width: 1,
-            height: 40,
-            color: Colors.grey,
-          ),
-          Flexible(
-
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  isMale = true;
-                });
-              },
-              icon: Icon(
-                Icons.man_outlined,
-                size: 40,
-                color: isMale == true ? Colors.teal : null,
-              ),
-            ),
-          ),
-          weightDropdownValue == 'st'
-              ? Expanded(
-                  flex: 8,
-                  child: Row(
-                    children: [
-                      Flexible(
-                        flex: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: TextField(
-                            controller: weightStController,
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) {
-                              weightInStones = double.parse(value);
-                              setState(() {});
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'st',
-                              hintStyle: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w200),
-                              labelText: 'St',
-                              labelStyle: TextStyle(
-                                fontSize: 15,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 30.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: TextField(
-                            controller: weightLbController,
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) {
-                              weightInPounds = double.parse(value);
-                              weightInKg = (weightInStones * 6.35029) +
-                                  (weightInPounds * 0.453592);
-                              calculateBMI(
-                                  height: heightInCm, weight: weightInKg);
-                              normalWeight(height: heightInCm);
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'lb',
-                              hintStyle: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w200),
-                              labelText: 'lb',
-                              labelStyle: TextStyle(
-                                fontSize: 15,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 30.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Expanded(
-                  flex: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextField(
-                      controller: weightDropdownValue == 'kg'
-                          ? weightKgController
-                          : weightLbPoundsController,
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        heightInCm = lHeightCm + fHeightCm;
-                        double weightCustom = double.parse(value);
-                        if (weightDropdownValue == 'kg') {
-                          weightInKg = weightCustom;
-                          calculateBMI(height: heightInCm, weight: weightInKg);
-                          normalWeight(height: heightInCm);
-                        } else if (weightDropdownValue == 'lb') {
-                          weightInKg = weightCustom * 0.453592;
-                          calculateBMI(height: heightInCm, weight: weightInKg);
-                          normalWeight(height: heightInCm);
-                        }
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Weight',
-                        hintText: weightDropdownValue == 'kg' ? 'kg' : 'lb',
-                        hintStyle: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w200),
-                        labelStyle: TextStyle(
-                          fontSize: 15,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 30.0),
-                      ),
-                    ),
-                  ),
-                ),
-          SizedBox(
-            height: 12,
-          ),
-          Expanded(
-            flex: 2,
-            child: WeightMetricsDropDownMenu(
-              dropdownValue: weightDropdownValue,
-              onChanged: (newValue) {
-                setState(() {
-                  weightDropdownValue = newValue!;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  GetBuilder<GetxController> AgeHeightRow() {
-    return GetBuilder<SwitchController>(
-      builder: (switchController) {
-
-        return Row(
+  GetBuilder<SwitchController> GenderWeightRow() {
+    return GetBuilder<SwitchController>(builder: (switchController) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 20.0, right: 30),
+        child: Row(
           children: [
-            switchController.switchValue.value?const SizedBox():
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: TextField(
-                  controller: ageController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Age',
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
-                  ),
-                ),
-              ),
-            ),
-            heightDropdownValue == 'cm'
-                ? Expanded(
-                    flex: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: TextField(
-                        controller: heightCmController,
-                        onChanged: (value) {
-                          double cm = double.tryParse(value) ?? 0.0;
-
-                          heightInCm = cm;
-                          calculateBMI(height: heightInCm, weight: weightInKg);
-                          normalWeight(height: heightInCm);
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: "cm",
-                          labelStyle: TextStyle(
-                            fontSize: 25,
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 1.0,
-                            horizontal: 4.0,
-                          ),
-                        ),
+            switchController.switchValue.value
+                ? Padding(
+                    padding: EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                    child: Text(
+                      'Weight',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                    ))
+                : Flexible(
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isMale = false;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.woman_outlined,
+                        size: 40,
+                        color: isMale == false ? Colors.teal : null,
                       ),
                     ),
-                  )
-                : Expanded(
-                    flex: 4,
+                  ),
+            switchController.switchValue.value
+                ? const SizedBox()
+                : SizedBox(
+                    width: 10,
+                  ),
+            switchController.switchValue.value
+                ? const SizedBox()
+                : Container(
+                    width: 1,
+                    height: 40,
+                    color: Colors.grey,
+                  ),
+            switchController.switchValue.value
+                ? const SizedBox()
+                : Flexible(
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isMale = true;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.man_outlined,
+                        size: 40,
+                        color: isMale == true ? Colors.teal : null,
+                      ),
+                    ),
+                  ),
+            weightDropdownValue == 'st'
+                ? Expanded(
+                    flex: 8,
                     child: Row(
                       children: [
                         Flexible(
-                          flex: 1,
+                          flex: 4,
                           child: Padding(
-                            padding: const EdgeInsets.all(30.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: TextField(
-                              controller: heightFtController,
-                              onChanged: (value) {
-                                if (heightDropdownValue == 'ft') {
-                                  double feet = double.parse(value);
-                                  fHeightCm = (feet * 30.48);
-                                } else {
-                                  fHeightCm = double.parse(value);
-                                }
-                                heightInCm = fHeightCm;
-                                calculateBMI(
-                                    height: heightInCm, weight: weightInKg);
-                                normalWeight(height: heightInCm);
-                              },
+                              controller: weightStController,
                               keyboardType: TextInputType.number,
+                              onChanged: (value) {
+                                weightInStones = double.parse(value);
+                                setState(() {});
+                              },
                               decoration: InputDecoration(
-                                hintText: "ft",
-                                labelText: "'",
+                                hintText: 'st',
+                                hintStyle: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w200),
+                                labelText: 'St',
                                 labelStyle: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 15,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
-                                    vertical: 1.0, horizontal: 4.0),
+                                    vertical: 10.0, horizontal: 30.0),
                               ),
                             ),
                           ),
                         ),
                         Flexible(
-                          flex: 1,
+                          flex: 4,
                           child: Padding(
-                            padding: const EdgeInsets.all(30.0),
+                            padding: const EdgeInsets.all(20),
                             child: TextField(
-                              controller: heightInchController,
-                              onChanged: (value) {
-                                if (heightDropdownValue == 'ft') {
-                                  double inches = double.parse(value);
-                                  lHeightCm = (inches * 2.54);
-                                } else {
-                                  lHeightCm = double.parse(value);
-                                }
-                                heightInCm = fHeightCm + lHeightCm;
-                                calculateBMI(
-                                    height: heightInCm, weight: weightInKg);
-                                normalWeight(height: heightInCm);
-                              },
+                              controller: weightLbController,
                               keyboardType: TextInputType.number,
+                              onChanged: StLbToKg,
                               decoration: InputDecoration(
-                                hintText: "in",
-                                labelText: '"',
+                                hintText: 'lb',
+                                hintStyle: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w200),
+                                labelText: 'lb',
                                 labelStyle: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 15,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
-                                    vertical: 1.0, horizontal: 4.0),
+                                    vertical: 10.0, horizontal: 30.0),
                               ),
                             ),
                           ),
                         ),
                       ],
                     ),
+                  )
+                : Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: TextField(
+                        controller: weightDropdownValue == 'kg'
+                            ? weightKgController
+                            : weightLbPoundsController,
+                        keyboardType: TextInputType.number,
+                        onChanged: finalBmiCalculation,
+                        decoration: InputDecoration(
+                          labelText: 'Weight',
+                          hintText: weightDropdownValue == 'kg' ? 'kg' : 'lb',
+                          hintStyle: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w200),
+                          labelStyle: TextStyle(
+                            fontSize: 15,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 30.0),
+                        ),
+                      ),
+                    ),
                   ),
-            Flexible(
+            SizedBox(
+              height: 12,
+            ),
+            Expanded(
               flex: 2,
-              child: HeightMetricsDropDownMenu(
-                dropdownValue: heightDropdownValue,
+              child: WeightMetricsDropDownMenu(
+                dropdownValue: weightDropdownValue,
                 onChanged: (newValue) {
                   setState(() {
-                    heightDropdownValue = newValue!;
+                    weightDropdownValue = newValue!;
                   });
                 },
               ),
             ),
           ],
-        );
-      }
-    );
+        ),
+      );
+    });
+  }
+
+
+
+  GetBuilder<GetxController> AgeHeightRow() {
+    return GetBuilder<SwitchController>(builder: (switchController) {
+      return Row(
+        children: [
+          switchController.switchValue.value ||
+                  switchController.classificationUnit == 'DGE'
+              ? Padding(
+                  padding: EdgeInsets.symmetric(vertical: 1, horizontal: 30),
+                  child: Text(
+                    'Height',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                  ))
+              : Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: TextField(
+                      controller: ageController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Age',
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 1.0, horizontal: 1.0),
+                      ),
+                    ),
+                  ),
+                ),
+          heightDropdownValue == 'cm'
+              ? Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: TextField(
+                      controller: heightCmController,
+                      onChanged: (value) {
+                        double cm = double.tryParse(value) ?? 0.0;
+
+                        heightInCm = cm;
+                        calculateBMI(height: heightInCm, weight: weightInKg);
+                        normalWeight(height: heightInCm);
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: "cm",
+                        labelStyle: TextStyle(
+                          fontSize: 25,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 1.0,
+                          horizontal: 4.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Expanded(
+                  flex: 4,
+                  child: Row(
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: TextField(
+                            controller: heightFtController,
+                            onChanged: (value) {
+                              if (heightDropdownValue == 'ft') {
+                                double feet = double.parse(value);
+                                fHeightCm = (feet * 30.48);
+                              } else {
+                                fHeightCm = double.parse(value);
+                              }
+                              heightInCm = fHeightCm;
+                              calculateBMI(
+                                  height: heightInCm, weight: weightInKg);
+                              normalWeight(height: heightInCm);
+                            },
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: "ft",
+                              labelText: "'",
+                              labelStyle: TextStyle(
+                                fontSize: 25,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 1.0, horizontal: 4.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: TextField(
+                            controller: heightInchController,
+                            onChanged: FeetToCm,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: "in",
+                              labelText: '"',
+                              labelStyle: TextStyle(
+                                fontSize: 25,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 1.0, horizontal: 4.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+          Flexible(
+            flex: 2,
+            child: HeightMetricsDropDownMenu(
+              dropdownValue: heightDropdownValue,
+              onChanged: (newValue) {
+                setState(() {
+                  heightDropdownValue = newValue!;
+                });
+              },
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
+  void FeetToCm(value) {
+    if (heightDropdownValue == 'ft') {
+      double inches = double.parse(value);
+      lHeightCm = (inches * 2.54);
+    } else {
+      lHeightCm = double.parse(value);
+    }
+    heightInCm = fHeightCm + lHeightCm;
+    calculateBMI(height: heightInCm, weight: weightInKg);
+    normalWeight(height: heightInCm);
   }
 
   void calculateBMI({required double height, required double weight}) {
@@ -569,6 +572,26 @@ class _BmiScreenState extends State<BmiScreen> {
         }
       }
     });
+  }
+  void finalBmiCalculation(value) {
+    heightInCm = lHeightCm + fHeightCm;
+    double weightCustom = double.parse(value);
+    if (weightDropdownValue == 'kg') {
+      weightInKg = weightCustom;
+      calculateBMI(height: heightInCm, weight: weightInKg);
+      normalWeight(height: heightInCm);
+    } else if (weightDropdownValue == 'lb') {
+      weightInKg = weightCustom * 0.453592;
+      calculateBMI(height: heightInCm, weight: weightInKg);
+      normalWeight(height: heightInCm);
+    }
+  }
+
+  void StLbToKg(value) {
+    weightInPounds = double.parse(value);
+    weightInKg = (weightInStones * 6.35029) + (weightInPounds * 0.453592);
+    calculateBMI(height: heightInCm, weight: weightInKg);
+    normalWeight(height: heightInCm);
   }
 
   Color getBMIColor(double bmi) {
