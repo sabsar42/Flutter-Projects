@@ -35,150 +35,143 @@ class _SettingScreenState extends State<SettingScreen> {
         leading: const BackButton(),
         title: const Text('Settings'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: GetBuilder<SwitchController>(
-          builder: (switchController) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  child: Text(
-                    'Evaluation',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.purpleAccent,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 180,
-                  height: 60,
-                  padding: const EdgeInsets.symmetric(vertical: 1.0),
-                  child: SettingsCustomDropdownMenu(
-                    items: ['WHO', 'DGE'],
-                    dropdownValue: classificationDropDownValue,
-                    onChanged: (newValue) {
-                      setState(() {
-                        classificationDropDownValue = newValue!;
-                      });
-                    },
-                    labelText: 'Classification',
-                  ),
-                ),
-                classificationDropDownValue == 'WHO'
-                    ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Adults only'),
-
-            Switch(
-                value: switchController.switchValue.value,
-                onChanged: switchController.toggleSwitch,
-              ),
-
-                  ],
-                )
-                    : const Text('( Age independent )'),
-                switchController.switchValue.value && classificationDropDownValue == 'WHO'
-                    ? const Text('( Age and Gender independent )')
-                    : SizedBox(),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  child: Text(
-                    'Units',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.purpleAccent,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      width: 180,
-                      height: 60,
-                      child: SettingsCustomDropdownMenu(
-                        items: ['ft', 'cm'],
-                        dropdownValue: heightUnit,
-                        onChanged: (newValue) {
-                          setState(() {
-                            heightUnit = newValue!;
-                          });
-                        },
-                        labelText: 'Height',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: GetBuilder<SwitchController>(
+            builder: (switchController) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15.0),
+                    child: Text(
+                      'Evaluation',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.indigo,
                       ),
                     ),
-                    Container(
-                      width: 180,
-                      height: 60,
-                      child: SettingsCustomDropdownMenu(
-                        items: ['kg', 'lb', 'st'],
-                        dropdownValue: weightUnit,
-                        onChanged: (newValue) {
-                          setState(() {
-                            weightUnit = newValue!;
-                          });
-                        },
-                        labelText: 'Weight',
+                  ),
+                  GetBuilder<SwitchController>(
+                    builder: (switchController) {
+                      return Container(
+                        width: 180,
+                        height: 60,
+                        padding: const EdgeInsets.symmetric(vertical: 1.0),
+                        child: SettingsCustomDropdownMenu(
+                          items: ['WHO', 'DGE'],
+                          dropdownValue: classificationDropDownValue,
+                          onChanged: (newValue) {
+                            setState(() {
+                              switchController.toggleClassificationUnit(newValue!);
+                              classificationDropDownValue = newValue!;
+                            });
+                          },
+                          labelText: 'Classification',
+
+                        ),
+                      );
+                    }
+                  ),
+                  classificationDropDownValue == 'WHO'
+                      ? Row(
+
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Adults only',style:TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500
+                      ) ,),
+        
+              Switch(
+                  value: switchController.switchValue.value,
+                  onChanged: switchController.toggleSwitch,
+                ),
+        
+                    ],
+                  )
+                      : const Text('( Age independent )',style:TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300
+                  ) ,),
+                  switchController.switchValue.value && classificationDropDownValue == 'WHO'
+                      ? const Text('( Age and Gender independent )',
+                    style:TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w300
+                    ) ,)
+                      : SizedBox(),
+                   UnitMenu(),
+
+                   Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: Text(
+                      'More',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.indigo,
                       ),
                     ),
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  child: Text(
-                    'More',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.purpleAccent,
-                    ),
                   ),
-                ),
-                Padding(
+                  MoreMenu(),
+                ],
+              );
+            }
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding MoreMenu() {
+    return Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children:  [
+
                       Text(
                         'Remove Ads',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
                       SizedBox(height: 10),
                       Text(
                         'Help & Feedback',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
                       SizedBox(height: 10),
                       Text(
                         'Share this app',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
                       SizedBox(height: 10),
                       Text(
                         'Rate this app',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
                       SizedBox(height: 10),
                       Text(
                         'More apps',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
                       SizedBox(height: 180),
@@ -186,8 +179,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         child: Text(
                           'Developed By',
                           style: TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w400,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
                       ),
@@ -196,19 +189,68 @@ class _SettingScreenState extends State<SettingScreen> {
                           'SHAKIB ABSAR',
                           style: TextStyle(
                             fontSize: 13,
-                            fontWeight: FontWeight.w200,
-                            color: Colors.teal,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.teal
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            );
-          }
-        ),
-      ),
-    );
+                );
+  }
+
+  Padding UnitMenu() {
+    return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Units',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.indigo,
+                        ),
+                      ),
+                      SizedBox(height: 15,),
+                      Row(
+
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            width: 180,
+                            height: 60,
+                            child: SettingsCustomDropdownMenu(
+                              items: ['ft', 'cm'],
+                              dropdownValue: heightUnit,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  heightUnit = newValue!;
+                                });
+                              },
+                              labelText: 'Height',
+                            ),
+                          ),
+                          Container(
+                            width: 180,
+                            height: 60,
+                            child: SettingsCustomDropdownMenu(
+                              items: ['kg', 'lb', 'st'],
+                              dropdownValue: weightUnit,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  weightUnit = newValue!;
+                                });
+                              },
+                              labelText: 'Weight',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
   }
 }
