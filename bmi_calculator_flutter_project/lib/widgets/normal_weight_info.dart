@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NormalWeightInfo extends StatelessWidget {
@@ -14,11 +13,11 @@ class NormalWeightInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          const Text(
             'Normal Weight',
             style: TextStyle(
                 color: Colors.black87,
@@ -29,7 +28,7 @@ class NormalWeightInfo extends StatelessWidget {
             firstNormalWeight == 0.0 || lastNormalWeight == 0.0
                 ? '...'
                 : '${firstNormalWeight.toStringAsFixed(1)} - ${lastNormalWeight.toStringAsFixed(1)} kg',
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black87,
                 fontSize: 18,
                 fontWeight: FontWeight.w700),

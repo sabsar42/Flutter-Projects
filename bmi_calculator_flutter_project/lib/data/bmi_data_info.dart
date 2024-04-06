@@ -1,6 +1,6 @@
 final List<Map<String, dynamic>> bmiData = [
   {
-    'range': [0, 15],
+    'range': [0, 15.9],
     'category': 'Very Severely Underweight'
   },
   {
