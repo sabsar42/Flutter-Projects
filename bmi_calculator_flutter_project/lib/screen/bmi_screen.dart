@@ -1,5 +1,5 @@
 import 'package:bmi_calculator_flutter_project/screen/settings_screen.dart';
-import 'package:bmi_calculator_flutter_project/switch_controller.dart';
+import 'package:bmi_calculator_flutter_project/controller/switch_controller.dart';
 import 'package:bmi_calculator_flutter_project/utils/dropdown_utils.dart';
 import 'package:bmi_calculator_flutter_project/widgets/bmi_circular_gauge.dart';
 import 'package:bmi_calculator_flutter_project/widgets/normal_weight_info.dart';
@@ -490,6 +490,7 @@ class _BmiScreenState extends State<BmiScreen> {
                               },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
+                                hintText: "ft",
                                 labelText: "'",
                                 labelStyle: TextStyle(
                                   fontSize: 25,
@@ -520,6 +521,7 @@ class _BmiScreenState extends State<BmiScreen> {
                               },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
+                                hintText: "in",
                                 labelText: '"',
                                 labelStyle: TextStyle(
                                   fontSize: 25,
