@@ -1,5 +1,5 @@
 import 'package:bmi_calculator_flutter_project/screen/bmi_screen.dart';
-import 'package:bmi_calculator_flutter_project/switch_controller.dart';
+import 'package:bmi_calculator_flutter_project/controller/switch_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
