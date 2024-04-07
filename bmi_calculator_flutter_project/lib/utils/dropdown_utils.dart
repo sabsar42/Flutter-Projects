@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/custom_drop_down_menu.dart';
 
-CustomDropdownMenu HeightMetricsDropDownMenu({
+CustomDropdownMenu heightMetricsDropDownMenu({
   required String dropdownValue,
   required ValueChanged<String?> onChanged,
 }) {
@@ -14,7 +14,7 @@ CustomDropdownMenu HeightMetricsDropDownMenu({
   );
 }
 
-CustomDropdownMenu WeightMetricsDropDownMenu({
+CustomDropdownMenu weightMetricsDropDownMenu({
   required String dropdownValue,
   required ValueChanged<String?> onChanged,
 }) {
